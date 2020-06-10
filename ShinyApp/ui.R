@@ -33,7 +33,7 @@ shinyUI(fluidPage(
     fluidRow(
         column(
             6,
-            plotlyOutput("SFNMplot")
+            plotlyOutput("NewCasesUS_NMAves")
         ),
         column(
             6,

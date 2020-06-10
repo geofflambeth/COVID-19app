@@ -1,4 +1,4 @@
-setwd("../csse_covid_19_data/csse_covid_19_daily_reports/")
+# setwd("../csse_covid_19_data/csse_covid_19_daily_reports/")
 
 # install.packages("plyr")
 # install.packages("dplyr")
@@ -17,11 +17,11 @@ library("shiny")
 library("accelerometry")
 library("scales")
 
-JohnsHopkinsAll <- list.files(pattern = "*.csv", full.names = TRUE) #Collect filenames from the working directory folder
-JohnsHopkinsAll <- lapply(JohnsHopkinsAll,function(i){           #Collect all data together into individual data frames
-    read.csv(i, header=TRUE)
-})
-JohnsHopkinsAll <- bind_rows(JohnsHopkinsAll)                       #Bind all data frames together
+# JohnsHopkinsAll <- list.files(pattern = "*.csv", full.names = TRUE) #Collect filenames from the working directory folder
+# JohnsHopkinsAll <- lapply(JohnsHopkinsAll,function(i){           #Collect all data together into individual data frames
+#     read.csv(i, header=TRUE)
+# })
+# JohnsHopkinsAll <- bind_rows(JohnsHopkinsAll)                       #Bind all data frames together
 
 JohnsHopkinsUS <- filter(JohnsHopkinsAll, Country_Region == "US")
 JohnsHopkinsUS_NM <- filter(JohnsHopkinsUS, Province_State == "New Mexico")
@@ -51,10 +51,15 @@ Data <- aggregate(NewData$Active, by = list(NewData$Date), FUN = sum)
 Active <- Data$x
 NewConfirmed = ConfirmedCases - lag(ConfirmedCases, default = 0)
 MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
-MovingAves <- movingaves(x = NewConfirmed, window = 7)
-MovingAves <- append(MovingAvesTemp, MovingAves)
-NewData <- data.frame(Date, ConfirmedCases, Deaths, Active, NewConfirmed, MovingAves)
+MovingAves7day <- movingaves(x = NewConfirmed, window = 7)
+MovingAves7day <- append(MovingAvesTemp, MovingAves7day)
+MovingAvesTemp <- c(NA)
+MovingAves2day <- movingaves(x = NewConfirmed, window = 2)
+MovingAves2day <- append(MovingAvesTemp, MovingAves2day)
+#Create Moving Ave trend for percentage change on 7-day moving average
+MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
 #Provide new name for data here:
+NewData <- data.frame(Date, ConfirmedCases, Deaths, Active, NewConfirmed, MovingAves7day, MovingAves2day, Trendline)
 JohnsHopkinsUS_NM_Aggregate <- NewData
 
 #Calculate moving average for new cases...
@@ -70,7 +75,7 @@ NewCasesUS_NM <- plot_ly(JohnsHopkinsUS_NM_Aggregate, x = ~Date, y = ~NewConfirm
 NewCasesUS_NM <- NewCasesUS_NM %>% layout(title = "New COVID-19 Cases in New Mexico")
 
 #Plot 7-day moving averages of cases
-NewCasesUS_NMAves <- plot_ly(JohnsHopkinsUS_NM_Aggregate, x = ~Date, y = ~MovingAves, type = "bar", color = I("orange"))
+NewCasesUS_NMAves <- plot_ly(JohnsHopkinsUS_NM_Aggregate, x = ~Date, y = ~MovingAves7day, type = "bar", color = I("blue"))
 NewCasesUS_NMAves <- NewCasesUS_NMAves %>% layout(title = "7-Day Moving Average of COVID-19 Cases in New Mexico", yaxis = list(title = "Moving Average of New Cases"))
 
 ###Aggregate and plot locations of new cases in New Mexico###
@@ -107,7 +112,9 @@ NM_New_Cases <- NM_New_Cases %>% layout(title = "New COVID-19 Cases by County, T
 SFNMdata <- JohnsHopkinsUS_NM_Aggregate
 SFNMdata$PChangeTotalCases <- SFNMdata$NewConfirmed / lag(SFNMdata$ConfirmedCases, default = 0) * 100
 # SFNMdata$PChangeTotalCases <- label_percent()(SFNMdata$PChangeTotalCases)
-SFNMdata$PChangeNewCases <- (SFNMdata$NewConfirmed - lag(SFNMdata$NewConfirmed, default = 0)) / lag(SFNMdata$NewConfirmed, default = 0) * 100
+SFNMdata$PChangeNewCases <- ((SFNMdata$NewConfirmed - lag(SFNMdata$NewConfirmed, default = 0)) / lag(SFNMdata$NewConfirmed, default = 0)) * 100
+SFNMdata$PChangeNewCasesMovingAve <- ((SFNMdata$MovingAves7day - lag(SFNMdata$MovingAves7day, default = 0)) /lag(SFNMdata$MovingAves7day, default = 0)) * 100
+Trendline <- movingaves(x = SFNMdata$PChangeNewCasesMovingAve, window = 7)
 # SFNMdata$PChangeNewCases <- label_percent()(SFNMdata$PChangeNewCases)
 # MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
 # MovingAves <- movingaves(x = SFNMdata$PChangeTotalCases, window = 7)
@@ -118,8 +125,9 @@ SFNMdata$PChangeNewCases <- (SFNMdata$NewConfirmed - lag(SFNMdata$NewConfirmed, 
 SFNMplot <- plot_ly(SFNMdata, x = ~Date, y = ~PChangeTotalCases, type = "bar", color = I("orange"))
 SFNMplot <- SFNMplot %>% layout(title = "Percent Change Compared to Prior Day Total Cases (Imitate the New Mexican)", yaxis = list(title = "Percentage Change (in %)"))
 SFNMplot
-SFNMRecplot <- plot_ly(SFNMdata, x = ~Date, y = ~PChangeNewCases, type = "bar", color = I("orange"))
-SFNMRecplot <- SFNMRecplot %>% layout(title = "Percent Change Compared to Prior Day Total Cases (Is this better?)", yaxis = list(title = "Percentage Change (in %)"))
+SFNMRecplot <- plot_ly(SFNMdata, x = ~Date, y = ~PChangeNewCasesMovingAve, type = "bar", color = I("orange"))
+SFNMRecplot <- SFNMRecplot %>% add_trace(y = ~Trendline, name = "Trendline", type = "scatter", mode = "lines", line = list(color = "blue", width = 4))
+SFNMRecplot <- SFNMRecplot %>% layout(title = "Percent Change of 7-day Moving Averages Compared to Prior Day (Is this better?)", yaxis = list(title = "Percentage Change (in %)"))
 SFNMRecplot
 
 
@@ -221,6 +229,7 @@ output$NewCasesUS <- renderPlotly(NewCasesUS)
 output$NM_New_Cases_Piechart <- renderPlotly(NM_New_Cases)
 output$SFNMplot <- renderPlotly(SFNMplot)
 output$SFNMRecplot <- renderPlotly(SFNMRecplot)
+output$NewCasesUS_NMAves <- renderPlotly(NewCasesUS_NMAves)
 
 
 })
