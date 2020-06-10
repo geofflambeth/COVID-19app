@@ -3,7 +3,7 @@
 
 App can in browser without cloning or download [here](https://geofflambeth.shinyapps.io/COVID19app)
 
-All files for the ShinyApp are maintained in the ShinyApp folder, while all Johns Hopkins data maintains its original filestructure
+All files for the ShinyApp are maintained in the ShinyApp folder, while all Johns Hopkins data maintains its original file structure.
 
 /ShinyApp/Update.R updates /ShinyApp/JohnsHopkinsAll.csv, which is pulled from /csse_covid_19_data/csse_covid_19_daily_reports.
 
