@@ -1,7 +1,7 @@
 # This is a web app using Shiny and Plotly to visualize COVID-19 data from Johns Hopkins.
 ### This app began with a fork of Johns Hopkins CCSE COVID 19 data, which is updated manually on a regular basis to maintain accuracy of the app.
 
-App can in browser without cloning or download [here](geofflambeth.shinyapps.io/COVID19app)
+App can in browser without cloning or download [here](https://geofflambeth.shinyapps.io/COVID19app)
 
 All files for the ShinyApp are maintained in the ShinyApp folder, while all Johns Hopkins data maintains its original filestructure
 
