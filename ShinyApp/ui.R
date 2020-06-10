@@ -33,6 +33,16 @@ shinyUI(fluidPage(
     fluidRow(
         column(
             6,
+            plotlyOutput("SFNMplot")
+        ),
+        column(
+            6,
+            plotlyOutput("SFNMRecplot")
+        )
+    ),
+    fluidRow(
+        column(
+            6,
             plotlyOutput("CasesUS_NM")
         ),
         column(
