@@ -5,9 +5,9 @@ account: geofflambeth
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2433375
-bundleId: 3254872
+bundleId: 3254946
 url: https://geofflambeth.shinyapps.io/COVID19app/
-when: 1591841058.16445
+when: 1591842260.26983
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: app.R|JohnsHopkinsAll.csv|server_1_0.R|Update.R
+ignoredFiles: JohnsHopkinsAll.csv|Update.R

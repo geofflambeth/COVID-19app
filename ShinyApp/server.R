@@ -219,7 +219,6 @@ ProvinceStatePieChart <- ProvinceStatePieChart %>% layout(title = PlotTitle,
                                         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE)
 )
-ProvinceStatePieChart
 
 # Define server logic
 shinyServer(function(input, output) {
