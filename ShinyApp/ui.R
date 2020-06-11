@@ -14,7 +14,7 @@ library(plotly)
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Geoff's COVID-19 Dashboard", windowTitle = "COVID-19"),
+    titlePanel("COVID-19 Data Dashboard, Data Courtesy of Johns Hopkins University", windowTitle = "COVID-19"),
 
     # Show a plot of the generated distribution
     fluidRow(
@@ -33,13 +33,24 @@ shinyUI(fluidPage(
     fluidRow(
         column(
             6,
-            plotlyOutput("NewCasesAdmin2")
+            plotlyOutput("Admin2Trend")
         ),
         column(
             6,
-            plotlyOutput("NewCasesProvinceState")
-        )
+            plotlyOutput("ProvinceStateTrend")
+        ),
+    
     ),
+    fluidRow(
+        column(
+            6,
+            plotlyOutput("CasesCountryRegion")
+        ),
+        column(
+            6,
+            plotlyOutput("CountryRegionTrend")
+        )
+    )
 #    fluidRow(
 #        column(
 #            6,

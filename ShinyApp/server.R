@@ -14,19 +14,20 @@ library("RCurl")
 #FEATURE TO ADD LATER <- Possible to write this update into script automatically? Need to solve github sync issue with large files....
 
 ##### NECESSARY FOR WEB PUBLISHING #####
-GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
-JohnsHopkinsAll <- read.csv(text = GitHubURL)
-JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
-JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
+#GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
+#JohnsHopkinsAll <- read.csv(text = GitHubURL)
+#JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
+#JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
                                      
 
 ##### FASTER FOR LOCAL USE #####
-# setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
-# JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
-# JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
-# JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
+setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
+JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
+JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
+JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
 
 ##FILTER RULES HERE##
+today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 CountryRegionFilter <- "US"
 ProvinceStateFilter <- "New Mexico"
 Admin2Filter <- "Santa Fe"
@@ -76,13 +77,17 @@ Active <- Data$x
 Data <- aggregate(NewData$Recovered, by = list(NewData$Date), FUN = sum)
 Recovered <- Data$x
 NewConfirmed = Confirmed - lag(Confirmed, default = 0)
-MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
+MovingAves7dayTemp <- c(NA, NA, NA, NA, NA, NA)
 MovingAves7day <- movingaves(x = NewConfirmed, window = 7, integer = TRUE)
-MovingAves7day <- append(MovingAvesTemp, MovingAves7day)
 PercentChangeDaily = ((MovingAves7day - lag(MovingAves7day, default = 0)) / lag(MovingAves7day, default = 0)) * 100
-MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
-MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = TRUE)
-MovingAvesPercentChange <- append(MovingAvesTemp, MovingAvesPercentChange)
+PercentChangeDaily[which(!is.finite(PercentChangeDaily))] <- 1
+MovingAvesPercentChangeTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = FALSE)
+#Add NA values
+MovingAves7day <- append(MovingAves7dayTemp, MovingAves7day)
+PercentChangeDaily <- append(MovingAves7dayTemp, PercentChangeDaily)
+MovingAvesPercentChange <- append(MovingAvesPercentChangeTemp, MovingAvesPercentChange)
+
 
 #Provide new name for data here:
 NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
@@ -108,13 +113,16 @@ Active <- Data$x
 Data <- aggregate(NewData$Recovered, by = list(NewData$Date), FUN = sum)
 Recovered <- Data$x
 NewConfirmed = Confirmed - lag(Confirmed, default = 0)
-MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
+MovingAves7dayTemp <- c(NA, NA, NA, NA, NA, NA)
 MovingAves7day <- movingaves(x = NewConfirmed, window = 7, integer = TRUE)
-MovingAves7day <- append(MovingAvesTemp, MovingAves7day)
 PercentChangeDaily = ((MovingAves7day - lag(MovingAves7day, default = 0)) / lag(MovingAves7day, default = 0)) * 100
-MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
-MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = TRUE)
-MovingAvesPercentChange <- append(MovingAvesTemp, MovingAvesPercentChange)
+PercentChangeDaily[which(!is.finite(PercentChangeDaily))] <- 1
+MovingAvesPercentChangeTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = FALSE)
+#Add NA values
+MovingAves7day <- append(MovingAves7dayTemp, MovingAves7day)
+PercentChangeDaily <- append(MovingAves7dayTemp, PercentChangeDaily)
+MovingAvesPercentChange <- append(MovingAvesPercentChangeTemp, MovingAvesPercentChange)
 
 #Provide new name for data here:
 NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
@@ -140,13 +148,16 @@ Active <- Data$x
 Data <- aggregate(NewData$Recovered, by = list(NewData$Date), FUN = sum)
 Recovered <- Data$x
 NewConfirmed = Confirmed - lag(Confirmed, default = 0)
-MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
+MovingAves7dayTemp <- c(NA, NA, NA, NA, NA, NA)
 MovingAves7day <- movingaves(x = NewConfirmed, window = 7, integer = TRUE)
-MovingAves7day <- append(MovingAvesTemp, MovingAves7day)
 PercentChangeDaily = ((MovingAves7day - lag(MovingAves7day, default = 0)) / lag(MovingAves7day, default = 0)) * 100
-MovingAvesTemp <- c(NA, NA, NA, NA, NA, NA)
-MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = TRUE)
-MovingAvesPercentChange <- append(MovingAvesTemp, MovingAvesPercentChange)
+PercentChangeDaily[which(!is.finite(PercentChangeDaily))] <- 1
+MovingAvesPercentChangeTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = FALSE)
+#Add NA values
+MovingAves7day <- append(MovingAves7dayTemp, MovingAves7day)
+PercentChangeDaily <- append(MovingAves7dayTemp, PercentChangeDaily)
+MovingAvesPercentChange <- append(MovingAvesPercentChangeTemp, MovingAvesPercentChange)
 
 #Provide new name for data here:
 NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
@@ -187,21 +198,38 @@ PlotTitle <- paste("New COVID-19 Cases Over Time in", Admin2Filter, "County,", P
 NewCasesAdmin2 <- plot_ly(Admin2Agg, x = ~Date, y = ~NewConfirmed, type = "bar")
 NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle)
 
+#Plot Admin2 Trendline
+PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", Admin2Filter, "County,", ProvinceStateFilter)
+Admin2Trend <- plot_ly(Admin2Agg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
+Admin2Trend <- Admin2Trend %>% add_trace(y = ~MovingAvesPercentChange, name = "Trendline", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+Admin2Trend <- Admin2Trend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
+
 #Plot ProvinceState New Cases
 PlotTitle <- paste("New COVID-19 Cases Over Time in", ProvinceStateFilter, ",", CountryRegionFilter)
 NewCasesProvinceState <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~NewConfirmed, type = "bar")
 NewCasesProvinceState <- NewCasesProvinceState %>% layout(title = PlotTitle)
 
+#Plot ProvinceState Trendline
+PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", ProvinceStateFilter, ",", CountryRegionFilter)
+ProvinceStateTrend <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
+ProvinceStateTrend <- ProvinceStateTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "Trendline", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+ProvinceStateTrend <- ProvinceStateTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
+
 #Plot CountryRegion New Cases
 PlotTitle <- paste("New COVID-19 Cases Over Time in", CountryRegionFilter)
 NewCasesCountryRegion <- plot_ly(CountryRegionAgg, x = ~Date, y = ~NewConfirmed, type = "bar")
 NewCasesCountryRegion <- NewCasesCountryRegion %>% layout(title = PlotTitle)
-NewCasesCountryRegion
+
+#Plot CountryRegion Trendline
+PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", CountryRegionFilter)
+CountryRegionTrend <- plot_ly(CountryRegionAgg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
+CountryRegionTrend <- CountryRegionTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "Trendline", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+CountryRegionTrend <- CountryRegionTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)", range = c(-800, 600)))
+CountryRegionTrend
 
 #Plot ProvinceState Counties Pie Chart
-today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 today <- ymd_hms(today)
-PlotTitle <- paste("Today's New Cases by County in", ProvinceStateFilter, "(", today, ")")
+PlotTitle <- paste("New Cases by County in", ProvinceStateFilter, "(", today, ")")
 
 ProvinceStateNewCasesLocations <- filter(JohnsHopkinsProvinceState, Date == today)
 County <- ProvinceStateNewCasesLocations$Admin2
@@ -231,6 +259,9 @@ shinyServer(function(input, output) {
   output$NewCasesProvinceState <- renderPlotly(NewCasesProvinceState)
   output$NewCasesCountryRegion <- renderPlotly(NewCasesCountryRegion)
   output$ProvinceStatePieChart <- renderPlotly(ProvinceStatePieChart)
+  output$Admin2Trend <- renderPlotly(Admin2Trend)
+  output$ProvinceStateTrend <- renderPlotly(ProvinceStateTrend)
+  output$CountryRegionTrend <- renderPlotly(CountryRegionTrend)
 
 })
 
