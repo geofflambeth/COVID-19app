@@ -13,11 +13,14 @@ library("RCurl")
 #Script references the master branch, so remember to update the MASTER branch not just the BETA branch
 #FEATURE TO ADD LATER <- Possible to write this update into script automatically? Need to solve github sync issue with large files....
 
-##### TURN BACK ON WHEN GOING LIVE #####
+##### NECESSARY FOR WEB PUBLISHING #####
 GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
 JohnsHopkinsAll <- read.csv(text = GitHubURL)
+JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
+JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
+                                     
 
-##### TEST FOR BETA - USES LOCAL FILE #####
+##### FASTER FOR LOCAL USE #####
 # setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
 # JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
 # JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
@@ -196,9 +199,9 @@ NewCasesCountryRegion <- NewCasesCountryRegion %>% layout(title = PlotTitle)
 NewCasesCountryRegion
 
 #Plot ProvinceState Counties Pie Chart
-PlotTitle <- paste("Today's New COVID-19 Cases by County in", ProvinceStateFilter,",", CountryRegionFilter, "(",today,")")
 today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 today <- ymd_hms(today)
+PlotTitle <- paste("Today's New Cases by County in", ProvinceStateFilter, "(", today, ")")
 
 ProvinceStateNewCasesLocations <- filter(JohnsHopkinsProvinceState, Date == today)
 County <- ProvinceStateNewCasesLocations$Admin2
