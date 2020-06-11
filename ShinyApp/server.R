@@ -14,14 +14,14 @@ library("RCurl")
 #FEATURE TO ADD LATER <- Possible to write this update into script automatically? Need to solve github sync issue with large files....
 
 ##### TURN BACK ON WHEN GOING LIVE #####
-# GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
-# JohnsHopkinsAll <- read.csv(text = GitHubURL)
+GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
+JohnsHopkinsAll <- read.csv(text = GitHubURL)
 
 ##### TEST FOR BETA - USES LOCAL FILE #####
-setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
-JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
-JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
-JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
+# setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
+# JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
+# JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
+# JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
 
 ##FILTER RULES HERE##
 CountryRegionFilter <- "US"
@@ -48,6 +48,10 @@ JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion5)
 JohnsHopkinsCountryRegion <- filter(JohnsHopkinsAll, CountryRegion == CountryRegionFilter)
 JohnsHopkinsProvinceState <- filter(JohnsHopkinsCountryRegion, ProvinceState == ProvinceStateFilter)
 JohnsHopkinsAdmin2 <- filter(JohnsHopkinsProvinceState, Admin2 == Admin2Filter)
+
+#Order ProvinceState by County and add NewCases
+JohnsHopkinsProvinceState <- JohnsHopkinsProvinceState[order(JohnsHopkinsProvinceState$Admin2),]
+JohnsHopkinsProvinceState$NewCasesByCounty = JohnsHopkinsProvinceState$Confirmed - lag(JohnsHopkinsProvinceState$Confirmed, default = 0)
 
 ##### Aggregate data by filter #####
 #CountryRegion Aggregate by Date
@@ -192,20 +196,22 @@ NewCasesCountryRegion <- NewCasesCountryRegion %>% layout(title = PlotTitle)
 NewCasesCountryRegion
 
 #Plot ProvinceState Counties Pie Chart
-PlotTitle <- paste("Today's (", today,") New COVID-19 Cases by County in", ProvinceStateFilter, ",", CountryRegionFilter)
+PlotTitle <- paste("Today's New COVID-19 Cases by County in", ProvinceStateFilter,",", CountryRegionFilter, "(",today,")")
 today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 today <- ymd_hms(today)
+
 ProvinceStateNewCasesLocations <- filter(JohnsHopkinsProvinceState, Date == today)
 County <- ProvinceStateNewCasesLocations$Admin2
 Date <- ProvinceStateNewCasesLocations$Date
-NewCases = (JohnsHopkinsProvinceState$Confirmed - lag(JohnsHopkinsProvinceState$Confirmed, default = 0))
-NewCasesDate <- JohnsHopkinsProvinceState$Date
-NewCasesDate <- data.frame(NewCasesDate, NewCases)
-NewCasesDate <- filter(NewCasesDate, NewCasesDate == today)
-NewCases <- NewCasesDate$NewCases
-ProvinceStateNewCasesLocations <- data.frame(Date, County, NewCases)
-ProvinceStateNewCasesLocations <- filter(ProvinceStateNewCasesLocations, NewCases > 0)
-ProvinceStatePieChart <- plot_ly(ProvinceStateNewCasesLocations, labels = ~County, values = ~NewCases, type = "pie")
+NewCasesByCounty <- ProvinceStateNewCasesLocations$NewCasesByCounty
+# NewCases <- (NewCases$Confirmed - lag(NewCases$Confirmed, default = 0))
+# NewCasesDate <- JohnsHopkinsProvinceState$Date
+# NewCasesDate <- data.frame(NewCasesDate, NewCases)
+# NewCasesDate <- filter(NewCasesDate, NewCasesDate == today)
+# NewCases <- NewCasesDate$NewCases
+ProvinceStateNewCasesLocations <- data.frame(Date, County, NewCasesByCounty)
+ProvinceStateNewCasesLocations <- filter(ProvinceStateNewCasesLocations, NewCasesByCounty > 0)
+ProvinceStatePieChart <- plot_ly(ProvinceStateNewCasesLocations, labels = ~County, values = ~NewCasesByCounty, type = "pie")
 ProvinceStatePieChart <- ProvinceStatePieChart %>% layout(title = PlotTitle,
                                         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE)
@@ -222,12 +228,8 @@ shinyServer(function(input, output) {
   output$NewCasesAdmin2 <- renderPlotly(NewCasesAdmin2)
   output$NewCasesProvinceState <- renderPlotly(NewCasesProvinceState)
   output$NewCasesCountryRegion <- renderPlotly(NewCasesCountryRegion)
-  output$NM_New_Cases_Piechart <- renderPlotly(NM_New_Cases)
-  output$SFNMplot <- renderPlotly(SFNMplot)
-  output$SFNMRecplot <- renderPlotly(SFNMRecplot)
-  output$NewCasesUS_NMAves <- renderPlotly(NewCasesUS_NMAves)
-  
-  
+  output$ProvinceStatePieChart <- renderPlotly(ProvinceStatePieChart)
+
 })
 
 

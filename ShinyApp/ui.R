@@ -18,38 +18,38 @@ shinyUI(fluidPage(
 
     # Show a plot of the generated distribution
     fluidRow(
-        plotlyOutput("CasesUS_NM_SF")
+        plotlyOutput("CasesAdmin2")
     ),
     fluidRow(
         column(
             6,
-            plotlyOutput("NewCasesUS_NM_SF")
+            plotlyOutput("CasesProvinceState")
         ),
         column(
             6,
-            plotlyOutput("NM_New_Cases_Piechart")
+            plotlyOutput("ProvinceStatePieChart")
         )
     ),
     fluidRow(
         column(
             6,
-            plotlyOutput("NewCasesUS_NMAves")
+            plotlyOutput("NewCasesAdmin2")
         ),
         column(
             6,
-            plotlyOutput("SFNMRecplot")
+            plotlyOutput("NewCasesProvinceState")
         )
     ),
-    fluidRow(
-        column(
-            6,
-            plotlyOutput("CasesUS_NM")
-        ),
-        column(
-            6,
-            plotlyOutput("NewCasesUS_NM")
-        )
-    )
+#    fluidRow(
+#        column(
+#            6,
+#            plotlyOutput("CasesUS_NM")
+#        ),
+#        column(
+#            6,
+#            plotlyOutput("NewCasesUS_NM")
+#        )
+#   )
  #   mainPanel(
  #       plotlyOutput("CasesUS_NM_SF")
  #   ),
