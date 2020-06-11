@@ -14,22 +14,22 @@ library("RCurl")
 #FEATURE TO ADD LATER <- Possible to write this update into script automatically? Need to solve github sync issue with large files....
 
 ##### NECESSARY FOR WEB PUBLISHING #####
-GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
-JohnsHopkinsAll <- read.csv(text = GitHubURL)
-JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
-JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
+# GitHubURL <- getURL("https://raw.githubusercontent.com/geofflambeth/COVID-19app/master/ShinyApp/JohnsHopkinsAll.csv")
+# JohnsHopkinsAll <- read.csv(text = GitHubURL)
+# JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
+# JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
                                      
 
 ##### FASTER FOR LOCAL USE #####
-# setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
-# JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
-# JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
-# JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
+setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
+JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
+JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
+JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
 
 ##FILTER RULES HERE##
 CountryRegionFilter <- "US"
-ProvinceStateFilter <- "New Mexico"
-Admin2Filter <- "Santa Fe"
+ProvinceStateFilter <- "Arizona"
+Admin2Filter <- "Coconino"
 Exclusion1 <- "2020-04-22"
 Exclusion1 <- parse_date_time(Exclusion1, orders = "ymd")
 Exclusion2 <- "2020-04-23"
