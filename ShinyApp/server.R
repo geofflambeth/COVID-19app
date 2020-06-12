@@ -29,8 +29,8 @@ JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c
 ##FILTER RULES HERE##
 today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 CountryRegionFilter <- "US"
-ProvinceStateFilter <- "New Mexico"
-Admin2Filter <- "Santa Fe"
+ProvinceStateFilter <- "Arizona"
+Admin2Filter <- "Coconino"
 Exclusion1 <- "2020-04-22"
 Exclusion1 <- parse_date_time(Exclusion1, orders = "ymd")
 Exclusion2 <- "2020-04-23"

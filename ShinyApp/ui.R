@@ -44,6 +44,16 @@ shinyUI(fluidPage(
     fluidRow(
         column(
             6,
+            plotlyOutput("NewCasesAdmin2")
+        ),
+        column(
+            6,
+            plotlyOutput("NewCasesProvinceState")
+        ),
+    ),
+    fluidRow(
+        column(
+            6,
             plotlyOutput("CasesCountryRegion")
         ),
         column(
