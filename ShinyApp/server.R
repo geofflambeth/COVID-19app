@@ -29,8 +29,8 @@ JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c
 ##FILTER RULES HERE##
 today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 CountryRegionFilter <- "US"
-ProvinceStateFilter <- "Arizona"
-Admin2Filter <- "Coconino"
+ProvinceStateFilter <- "New Mexico"
+Admin2Filter <- "Santa Fe"
 Exclusion1 <- "2020-04-22"
 Exclusion1 <- parse_date_time(Exclusion1, orders = "ymd")
 Exclusion2 <- "2020-04-23"
@@ -49,6 +49,11 @@ JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion2)
 JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion3)
 JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion4)
 JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion5)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
 JohnsHopkinsCountryRegion <- filter(JohnsHopkinsAll, CountryRegion == CountryRegionFilter)
 JohnsHopkinsProvinceState <- filter(JohnsHopkinsCountryRegion, ProvinceState == ProvinceStateFilter)
 JohnsHopkinsAdmin2 <- filter(JohnsHopkinsProvinceState, Admin2 == Admin2Filter)
