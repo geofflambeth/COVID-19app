@@ -41,6 +41,10 @@ Exclusion4 <- "2020-04-27"
 Exclusion4 <- parse_date_time(Exclusion4, orders = "ymd")
 Exclusion5 <- "2020-04-28"
 Exclusion5 <- parse_date_time(Exclusion5, orders = "ymd")
+Exclusion6 <- "2020-06-29"
+Exclusion6 <- parse_date_time(Exclusion6, orders = "ymd")
+Exclusion7 <- "2020-06-30"
+Exclusion7 <- parse_date_time(Exclusion7, orders = "ymd")
 
 #Filter JohnsHopkinsAll
 #FEATURE TO ADD LATER <- Select filters from ShinyApp ui.R
@@ -49,8 +53,8 @@ JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion2)
 JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion3)
 JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion4)
 JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion5)
-#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
-#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
+JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion6)
+JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion7)
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
