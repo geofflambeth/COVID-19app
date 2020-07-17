@@ -26,12 +26,9 @@ MM-DD-YYYY.csv in UTC.
 * <b>Confirmed</b>: Confirmed cases include presumptive positive cases  and probable cases, in accordance with CDC guidelines as of April 14.
 * <b>Deaths</b>: Death totals in the US include confirmed and probable, in accordance with [CDC](https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html) guidelines as of April 14.
 * <b>Recovered</b>: Recovered cases outside China are estimates based on local media reports, and state and local reporting when available, and therefore may be substantially lower than the true number. US state-level recovered cases are from [COVID Tracking Project](https://covidtracking.com/).
-* <b>Active:</b> Active cases = total confirmed - total recovered - total deaths.
-* <b>Incidence_Rate</b>: Admin2 + Province_State + Country_Region.
-* <b>Case-Fatality Ratio (%)</b>: = confirmed cases per 100,000 persons.
-* <b>US Testing Rate</b>: = total test results per 100,000 persons. The "total test results" is equal to "Total test results
-(Positive + Negative)" from [COVID Tracking Project](https://covidtracking.com/).
-* <b>US Hospitalization Rate (%)</b>: = Total number hospitalized / Number confirmed cases. The "Total number hospitalized" is the "Hospitalized – Cumulative" count from [COVID Tracking Project](https://covidtracking.com/). The "hospitalization rate" and "hospitalized - Cumulative" data is only presented for those states which provide cumulative hospital data.
+* <b>Active:</b> total confirmed - total recovered - total deaths.
+* <b>Incidence_Rate</b>: confirmed cases per 100,000 persons.
+* <b>Case-Fatality Ratio (%)</b>: number recorded deaths / number confirmed cases.
 
 ### Update frequency
 * Files on and after April 23, once per day between 03:30 and 04:00 UTC.
@@ -71,8 +68,9 @@ MM-DD-YYYY.csv in UTC.
 * <b>Mortality_Rate</b> - Number recorded deaths * 100/ Number confirmed cases.
 * <b>UID</b> - Unique Identifier for each row entry. 
 * <b>ISO3</b> - Officialy assigned country code identifiers.
-* <b>Testing_Rate</b> - Total number of people tested per 100,000 persons.
-* <b>Hospitalization_Rate</b> - Total number of people hospitalized * 100/ Number of confirmed cases.
+* <b>Testing_Rate</b> - Total number of people tested per 100,000 persons. The "total test results" is equal to "Total test results
+(Positive + Negative)" from [COVID Tracking Project](https://covidtracking.com/).
+* <b>Hospitalization_Rate</b> - Total number of people hospitalized * 100/ Number of confirmed cases. The "Total number hospitalized" is the "Hospitalized – Cumulative" count from [COVID Tracking Project](https://covidtracking.com/). The "hospitalization rate" and "hospitalized - Cumulative" data is only presented for those states which provide cumulative hospital data.
 
 ### Update frequency
 * Once per day between 03:30 and 04:00 UTC.
@@ -173,7 +171,7 @@ International
   * Italy: UIDs are combined country code (380) with `codice_regione`, which is from [Dati COVID-19 Italia](https://github.com/pcm-dpc/COVID-19). Exceptions: P.A. Bolzano is 38041 and P.A. Trento is 38042.
 3.	The US (most entries with Admin0, Admin1 and Admin2).
   *	US by itself is 840 (UID = code3).
-  *	US dependencies, American Samoa, Guam, Northern Mariana Islands, Virgin Islands and Puerto Rico, UID = code3. Their FIPS codes are different from code3.
+  *	US dependencies, American Samoa, Guam, Northern Mariana Islands, Virgin Islands and Puerto Rico, UID = code3. Their Admin0 FIPS codes are different from code3.
   *	US states: UID = 840 (country code3) + 000XX (state FIPS code). Ranging from 8400001 to 84000056.
   *	Out of [State], US: UID = 840 (country code3) + 800XX (state FIPS code). Ranging from 8408001 to 84080056.
   *	Unassigned, US: UID = 840 (country code3) + 900XX (state FIPS code). Ranging from 8409001 to 84090056.
@@ -181,6 +179,7 @@ International
   *	Exception type 1, such as recovered and Kansas City, ranging from 8407001 to 8407999.
   *	Exception type 2, only the New York City, which is replacing New York County and its FIPS code.
   *	Exception type 3, Diamond Princess, US: 84088888; Grand Princess, US: 84099999.
+  * Exception type 4, municipalities in Puerto Rico are regarded as counties with FIPS codes. The FIPS code for the unassigned category is defined as 72999.
 4. Population data sources.
  * United Nations, Department of Economic and Social Affairs, Population Division (2019). World Population Prospects 2019, Online Edition. Rev. 1. https://population.un.org/wpp/Download/Standard/Population/
  * eurostat: https://ec.europa.eu/eurostat/web/products-datasets/product?code=tgs00096
@@ -189,5 +188,6 @@ International
 * Brazil 2019 projection: ftp://ftp.ibge.gov.br/Estimativas_de_Populacao/Estimativas_2019/
 * Peru 2020 projection: https://www.citypopulation.de/en/peru/cities/
 * India 2019 population: http://statisticstimes.com/demographics/population-of-indian-states.php
+* The Admin0 level population could be different from the sum of Admin1 level population since they may be from different sources.
 
 Disclaimer: \*The names of locations included on the Website correspond with the official designations used by the U.S. Department of State. The presentation of material therein does not imply the expression of any opinion whatsoever on the part of JHU concerning the legal status of any country, area or territory or of its authorities. The depiction and use of boundaries, geographic names and related data shown on maps and included in lists, tables, documents, and databases on this website are not warranted to be error free nor do they necessarily imply official endorsement or acceptance by JHU.
