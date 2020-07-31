@@ -21,7 +21,7 @@ library("RCurl")
                                      
 
 ##### FASTER FOR LOCAL USE #####
-setwd("~/Google Drive/GitHub/COVID-19app/ShinyApp/")
+setwd("~/OneDrive/GitHub/COVID-19app/ShinyApp/")
 JohnsHopkinsAll <- read.csv("JohnsHopkinsAll.csv")
 JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
 JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
