@@ -204,7 +204,9 @@ CasesCountryRegion <- CasesCountryRegion %>% layout(title = PlotTitle, xaxis = l
 
 #Plot Admin2 New Cases
 PlotTitle <- paste("New COVID-19 Cases Over Time in", Admin2Filter, "County,", ProvinceStateFilter)
-NewCasesAdmin2 <- plot_ly(Admin2Agg, x = ~Date, y = ~NewConfirmed, type = "bar")
+NewCasesAdmin2 <- plot_ly(Admin2Agg, x = ~Date, y = ~NewConfirmed, name = "New Confirmed Cases", type = "scatter", mode = "markers")
+NewCasesAdmin2 <- NewCasesAdmin2 %>% add_trace(y = ~MovingAves7day, name = "7-Day Average New Cases", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "New Confirmed COVID-19 Cases"))
 NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle)
 
 #Plot Admin2 Trendline
