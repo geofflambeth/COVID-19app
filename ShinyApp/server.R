@@ -48,13 +48,13 @@ Exclusion7 <- parse_date_time(Exclusion7, orders = "ymd")
 
 #Filter JohnsHopkinsAll
 #FEATURE TO ADD LATER <- Select filters from ShinyApp ui.R
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion1)
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion2)
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion3)
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion4)
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion5)
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion6)
-JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion7)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion1)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion2)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion3)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion4)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion5)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion6)
+#JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion7)
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion)
@@ -203,10 +203,10 @@ CasesCountryRegion <- CasesCountryRegion %>% add_trace(y = ~Deaths, name = "Deat
 CasesCountryRegion <- CasesCountryRegion %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Cases"))
 
 #Plot Admin2 New Cases
-PlotTitle <- paste("New COVID-19 Cases Over Time in", Admin2Filter, "County,", ProvinceStateFilter)
-NewCasesAdmin2 <- plot_ly(Admin2Agg, x = ~Date, y = ~NewConfirmed, name = "New Confirmed Cases", type = "scatter", mode = "markers")
-NewCasesAdmin2 <- NewCasesAdmin2 %>% add_trace(y = ~MovingAves7day, name = "7-Day Average New Cases", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
-NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "New Confirmed COVID-19 Cases"))
+PlotTitle <- paste("7-Day Average New COVID-19 Cases in", Admin2Filter, "County,", ProvinceStateFilter)
+NewCasesAdmin2 <- plot_ly(Admin2Agg, x = ~Date, y = ~MovingAves7day, name = "7-Day Average New Confirmed Cases", type = "bar", color = "red")
+#NewCasesAdmin2 <- NewCasesAdmin2 %>% add_trace(y = ~MovingAves7day, name = "7-Day Average New Cases", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+#NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "New Confirmed COVID-19 Cases"))
 NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle)
 
 #Plot Admin2 Trendline
@@ -216,8 +216,8 @@ Admin2Trend <- Admin2Trend %>% add_trace(y = ~MovingAvesPercentChange, name = "T
 Admin2Trend <- Admin2Trend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
 
 #Plot ProvinceState New Cases
-PlotTitle <- paste("New COVID-19 Cases Over Time in", ProvinceStateFilter, ",", CountryRegionFilter)
-NewCasesProvinceState <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~NewConfirmed, type = "bar")
+PlotTitle <- paste("7-Day Average New COVID-19 Cases in", ProvinceStateFilter, ",", CountryRegionFilter)
+NewCasesProvinceState <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~MovingAves7day, type = "bar", color = "blue")
 NewCasesProvinceState <- NewCasesProvinceState %>% layout(title = PlotTitle)
 
 #Plot ProvinceState Trendline
@@ -239,7 +239,7 @@ CountryRegionTrend <- CountryRegionTrend %>% layout(title = PlotTitle, xaxis = l
 CountryRegionTrend
 
 #Plot ProvinceState Counties Pie Chart
-today <- ymd_hms(today)
+today <- max(JohnsHopkinsProvinceState$Date)
 PlotTitle <- paste("New Cases by County in", ProvinceStateFilter, "(", today, ")")
 
 ProvinceStateNewCasesLocations <- filter(JohnsHopkinsProvinceState, Date == today)
