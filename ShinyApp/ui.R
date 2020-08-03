@@ -51,16 +51,6 @@ shinyUI(fluidPage(
             6,
             plotlyOutput("NewCasesProvinceState")
         ),
-    ),
-    fluidRow(
-        column(
-            6,
-            plotlyOutput("CasesCountryRegion")
-        ),
-        column(
-            6,
-            plotlyOutput("CountryRegionTrend")
-        )
     )
 #    fluidRow(
 #        column(

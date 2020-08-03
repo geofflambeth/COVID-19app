@@ -207,23 +207,23 @@ PlotTitle <- paste("7-Day Average New COVID-19 Cases in", Admin2Filter, "County,
 NewCasesAdmin2 <- plot_ly(Admin2Agg, x = ~Date, y = ~MovingAves7day, name = "7-Day Average New Confirmed Cases", type = "bar", color = "red")
 #NewCasesAdmin2 <- NewCasesAdmin2 %>% add_trace(y = ~MovingAves7day, name = "7-Day Average New Cases", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
 #NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "New Confirmed COVID-19 Cases"))
-NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle)
+NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle, yaxis = list(title = "New COVID-19 Cases"))
 
 #Plot Admin2 Trendline
 PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", Admin2Filter, "County,", ProvinceStateFilter)
 Admin2Trend <- plot_ly(Admin2Agg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
-Admin2Trend <- Admin2Trend %>% add_trace(y = ~MovingAvesPercentChange, name = "Trendline", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+Admin2Trend <- Admin2Trend %>% add_trace(y = ~MovingAvesPercentChange, name = "7-Day Avg of % Change", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
 Admin2Trend <- Admin2Trend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
 
 #Plot ProvinceState New Cases
 PlotTitle <- paste("7-Day Average New COVID-19 Cases in", ProvinceStateFilter, ",", CountryRegionFilter)
 NewCasesProvinceState <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~MovingAves7day, type = "bar", color = "blue")
-NewCasesProvinceState <- NewCasesProvinceState %>% layout(title = PlotTitle)
+NewCasesProvinceState <- NewCasesProvinceState %>% layout(title = PlotTitle, yaxis = list(title = "New COVID-19 Cases"))
 
 #Plot ProvinceState Trendline
 PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", ProvinceStateFilter, ",", CountryRegionFilter)
 ProvinceStateTrend <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
-ProvinceStateTrend <- ProvinceStateTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "Trendline", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+ProvinceStateTrend <- ProvinceStateTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "7-Day Avg of % Change", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
 ProvinceStateTrend <- ProvinceStateTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
 
 #Plot CountryRegion New Cases
@@ -234,7 +234,7 @@ NewCasesCountryRegion <- NewCasesCountryRegion %>% layout(title = PlotTitle)
 #Plot CountryRegion Trendline
 PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", CountryRegionFilter)
 CountryRegionTrend <- plot_ly(CountryRegionAgg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
-CountryRegionTrend <- CountryRegionTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "Trendline", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
+CountryRegionTrend <- CountryRegionTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "7-Day Avg of % Change", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
 CountryRegionTrend <- CountryRegionTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)", range = c(-800, 600)))
 CountryRegionTrend
 
