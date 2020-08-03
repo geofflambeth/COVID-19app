@@ -27,10 +27,9 @@ JohnsHopkinsAll$Date <- parse_date_time(JohnsHopkinsAll$Date, orders = c("ymd"))
 JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c("ymd_HMS"))
 
 ##FILTER RULES HERE##
-today <- format(Sys.Date(), "%Y-%m-%d 00:00:00")
 CountryRegionFilter <- "US"
-ProvinceStateFilter <- "New Mexico"
-Admin2Filter <- "Santa Fe"
+ProvinceStateFilter <- "Arizona"
+Admin2Filter <- "Coconino"
 Exclusion1 <- "2020-04-22"
 Exclusion1 <- parse_date_time(Exclusion1, orders = "ymd")
 Exclusion2 <- "2020-04-23"
@@ -61,6 +60,9 @@ Exclusion7 <- parse_date_time(Exclusion7, orders = "ymd")
 JohnsHopkinsCountryRegion <- filter(JohnsHopkinsAll, CountryRegion == CountryRegionFilter)
 JohnsHopkinsProvinceState <- filter(JohnsHopkinsCountryRegion, ProvinceState == ProvinceStateFilter)
 JohnsHopkinsAdmin2 <- filter(JohnsHopkinsProvinceState, Admin2 == Admin2Filter)
+today <- max(JohnsHopkinsProvinceState$Date) #sets today as the most recent data point
+tomorrow <- max(JohnsHopkinsProvinceState$Date)+86400 #sets tomorrow as one day in the future
+onemonthago <- max(JohnsHopkinsProvinceState$Date)-2678400 #removes 31 days from the most recent data point
 
 #Order ProvinceState by County and add NewCases
 JohnsHopkinsProvinceState <- JohnsHopkinsProvinceState[order(JohnsHopkinsProvinceState$Admin2),]
@@ -213,7 +215,7 @@ NewCasesAdmin2 <- NewCasesAdmin2 %>% layout(title = PlotTitle, yaxis = list(titl
 PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", Admin2Filter, "County,", ProvinceStateFilter)
 Admin2Trend <- plot_ly(Admin2Agg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
 Admin2Trend <- Admin2Trend %>% add_trace(y = ~MovingAvesPercentChange, name = "7-Day Avg of % Change", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
-Admin2Trend <- Admin2Trend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
+Admin2Trend <- Admin2Trend %>% layout(title = PlotTitle, xaxis = list(title = "Date", range = c(onemonthago, tomorrow)), yaxis = list(title = "Percent Change in New Cases (in %)", range = c(-27, 27)))
 
 #Plot ProvinceState New Cases
 PlotTitle <- paste("7-Day Average New COVID-19 Cases in", ProvinceStateFilter, ",", CountryRegionFilter)
@@ -224,7 +226,8 @@ NewCasesProvinceState <- NewCasesProvinceState %>% layout(title = PlotTitle, yax
 PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", ProvinceStateFilter, ",", CountryRegionFilter)
 ProvinceStateTrend <- plot_ly(ProvinceStateAgg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
 ProvinceStateTrend <- ProvinceStateTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "7-Day Avg of % Change", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
-ProvinceStateTrend <- ProvinceStateTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)"))
+ProvinceStateTrend <- ProvinceStateTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date", range = c(onemonthago, tomorrow)), yaxis = list(title = "Percent Change in New Cases (in %)", range = c(-27, 27)))
+ProvinceStateTrend
 
 #Plot CountryRegion New Cases
 PlotTitle <- paste("New COVID-19 Cases Over Time in", CountryRegionFilter)
@@ -235,11 +238,10 @@ NewCasesCountryRegion <- NewCasesCountryRegion %>% layout(title = PlotTitle)
 PlotTitle <- paste("Percentage Change in 7-day Average New Cases in", CountryRegionFilter)
 CountryRegionTrend <- plot_ly(CountryRegionAgg, x = ~Date, y = ~PercentChangeDaily, name = "Percent Change", type = "scatter", mode = "markers")
 CountryRegionTrend <- CountryRegionTrend %>% add_trace(y = ~MovingAvesPercentChange, name = "7-Day Avg of % Change", mode = "lines", line = list(color = "red", shape = "spline", width = 4))
-CountryRegionTrend <- CountryRegionTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date"), yaxis = list(title = "Percent Change in New Cases (in %)", range = c(-800, 600)))
+CountryRegionTrend <- CountryRegionTrend %>% layout(title = PlotTitle, xaxis = list(title = "Date", range = c(onemonthago, tomorrow)), yaxis = list(title = "Percent Change in New Cases (in %)", range = c(-27, 27)))
 CountryRegionTrend
 
 #Plot ProvinceState Counties Pie Chart
-today <- max(JohnsHopkinsProvinceState$Date)
 PlotTitle <- paste("New Cases by County in", ProvinceStateFilter, "(", today, ")")
 
 ProvinceStateNewCasesLocations <- filter(JohnsHopkinsProvinceState, Date == today)
