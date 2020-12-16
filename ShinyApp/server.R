@@ -45,6 +45,7 @@ Exclusion6 <- parse_date_time(Exclusion6, orders = "ymd")
 Exclusion7 <- "2020-06-30"
 Exclusion7 <- parse_date_time(Exclusion7, orders = "ymd")
 
+
 #Filter JohnsHopkinsAll
 #FEATURE TO ADD LATER <- Select filters from ShinyApp ui.R
 #JohnsHopkinsAll <- filter(JohnsHopkinsAll, Date != Exclusion1)
@@ -63,6 +64,8 @@ JohnsHopkinsAdmin2 <- filter(JohnsHopkinsProvinceState, Admin2 == Admin2Filter)
 today <- max(JohnsHopkinsProvinceState$Date) #sets today as the most recent data point
 tomorrow <- max(JohnsHopkinsProvinceState$Date)+86400 #sets tomorrow as one day in the future
 onemonthago <- max(JohnsHopkinsProvinceState$Date)-2678400 #removes 31 days from the most recent data point
+
+if(Admin2Filter == "Santa Fe" & ProvinceStateFilter == "New Mexico") JohnsHopkinsAdmin2$Confirmed[262] <- ((JohnsHopkinsAdmin2$Confirmed[263]-JohnsHopkinsAdmin2$Confirmed[261])/2)+JohnsHopkinsAdmin2$Confirmed[261]
 
 #Order ProvinceState by County and add NewCases
 JohnsHopkinsProvinceState <- JohnsHopkinsProvinceState[order(JohnsHopkinsProvinceState$Admin2),]
@@ -90,18 +93,21 @@ Recovered <- Data$x
 NewConfirmed = Confirmed - lag(Confirmed, default = 0)
 MovingAves7dayTemp <- c(NA, NA, NA, NA, NA, NA)
 MovingAves7day <- movingaves(x = NewConfirmed, window = 7, integer = TRUE)
+MovingAves14dayTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+MovingAves14day <- movingaves(x = NewConfirmed, window = 14, integer = TRUE)
 PercentChangeDaily = ((MovingAves7day - lag(MovingAves7day, default = 0)) / lag(MovingAves7day, default = 0)) * 100
 PercentChangeDaily[which(!is.finite(PercentChangeDaily))] <- 1
 MovingAvesPercentChangeTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
 MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = FALSE)
 #Add NA values
 MovingAves7day <- append(MovingAves7dayTemp, MovingAves7day)
+MovingAves14day <- append(MovingAves14dayTemp, MovingAves14day)
 PercentChangeDaily <- append(MovingAves7dayTemp, PercentChangeDaily)
 MovingAvesPercentChange <- append(MovingAvesPercentChangeTemp, MovingAvesPercentChange)
 
 
 #Provide new name for data here:
-NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
+NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, MovingAves14day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
 CountryRegionAgg <- NewData
 
 
@@ -161,17 +167,21 @@ Recovered <- Data$x
 NewConfirmed = Confirmed - lag(Confirmed, default = 0)
 MovingAves7dayTemp <- c(NA, NA, NA, NA, NA, NA)
 MovingAves7day <- movingaves(x = NewConfirmed, window = 7, integer = TRUE)
+MovingAves14dayTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+MovingAves14day <- movingaves(x = NewConfirmed, window = 14, integer = TRUE)
 PercentChangeDaily = ((MovingAves7day - lag(MovingAves7day, default = 0)) / lag(MovingAves7day, default = 0)) * 100
 PercentChangeDaily[which(!is.finite(PercentChangeDaily))] <- 1
 MovingAvesPercentChangeTemp <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
 MovingAvesPercentChange <- movingaves(x = PercentChangeDaily, window = 7, integer = FALSE)
 #Add NA values
 MovingAves7day <- append(MovingAves7dayTemp, MovingAves7day)
+MovingAves14day <- append(MovingAves14dayTemp, MovingAves14day)
+
 PercentChangeDaily <- append(MovingAves7dayTemp, PercentChangeDaily)
 MovingAvesPercentChange <- append(MovingAvesPercentChangeTemp, MovingAvesPercentChange)
 
 #Provide new name for data here:
-NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
+NewData <- data.frame(Date, Confirmed, NewConfirmed, MovingAves7day, MovingAves14day, PercentChangeDaily, MovingAvesPercentChange, Active, Recovered, Deaths)
 Admin2Agg <- NewData
 
 
