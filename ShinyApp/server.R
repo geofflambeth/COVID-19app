@@ -28,8 +28,8 @@ JohnsHopkinsAll$DateTime <- parse_date_time(JohnsHopkinsAll$DateTime, orders = c
 
 ##FILTER RULES HERE##
 CountryRegionFilter <- "US"
-ProvinceStateFilter <- "California"
-Admin2Filter <- "Santa Barbara"
+ProvinceStateFilter <- "New Mexico"
+Admin2Filter <- "Santa Fe"
 Exclusion1 <- "2020-04-22"
 Exclusion1 <- parse_date_time(Exclusion1, orders = "ymd")
 Exclusion2 <- "2020-04-23"
