@@ -1,7 +1,7 @@
 ##This script needs to be run after pulling down updates from JohnsHopkins origin or upstream...
 ##Changes need to be committed to master after running
 
-setwd("~/Google Drive/GitHub/COVID-19app/csse_covid_19_data/csse_covid_19_daily_reports/")
+setwd("~/OneDrive/GitHub/COVID-19app/csse_covid_19_data/csse_covid_19_daily_reports/")
 
 library("dplyr")
 library("lubridate")
@@ -11,6 +11,9 @@ JohnsHopkinsAll <- list.files(pattern = "*.csv", full.names = TRUE)
 JohnsHopkinsAll <- lapply(JohnsHopkinsAll,function(i){
   read.csv(i, header=TRUE)
 })
+write.csv(JohnsHopkinsAll, "../../ShinyApp/JohnsHopkinsAll.csv")
+list.search(JohnsHopkinsAll, all(. == "Case_Fatality_Ratio"))
+
 JohnsHopkinsAll <- bind_rows(JohnsHopkinsAll)
 
 ###Clean JohnsHopkinsAll###
