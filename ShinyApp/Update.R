@@ -11,10 +11,11 @@ JohnsHopkinsAll <- list.files(pattern = "*.csv", full.names = TRUE)
 JohnsHopkinsAll <- lapply(JohnsHopkinsAll,function(i){
   read.csv(i, header=TRUE)
 })
-write.csv(JohnsHopkinsAll, "../../ShinyApp/JohnsHopkinsAll.csv")
-list.search(JohnsHopkinsAll, all(. == "Case_Fatality_Ratio"))
 
-JohnsHopkinsAll <- bind_rows(JohnsHopkinsAll)
+# Class correction
+JohnsHopkinsAll[[14]]$Case_Fatality_Ratio <- as.numeric(JohnsHopkinsAll[[14]]$Case_Fatality_Ratio)
+
+JohnsHopkinsAll <- bind_rows(JohnsHopkinsAll, .id = "id")
 
 ###Clean JohnsHopkinsAll###
 #Clean Dates
