@@ -1,0 +1,13 @@
+name: COVID19app
+title: COVID19app
+username:
+account: geofflambeth
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2433375
+bundleId: 3292727
+url: https://geofflambeth.shinyapps.io/COVID19app/
+when: 1592585477.32851
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .Rapp.history|JohnsHopkinsAll.csv|Update.R
