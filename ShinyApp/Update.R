@@ -12,12 +12,6 @@ JohnsHopkinsAll <- lapply(JohnsHopkinsAll,function(i){
   read.csv(i, header=TRUE)
 })
 
-<<<<<<< HEAD
-# Class correction
-JohnsHopkinsAll[[14]]$Case_Fatality_Ratio <- as.numeric(JohnsHopkinsAll[[14]]$Case_Fatality_Ratio)
-
-=======
->>>>>>> automated
 JohnsHopkinsAll <- bind_rows(JohnsHopkinsAll, .id = "id")
 
 ###Clean JohnsHopkinsAll###
