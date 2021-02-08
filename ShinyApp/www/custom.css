@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+
+body {
+  width: 90%;
+  max-width: 1500px;
+  margin: auto;
+  background-color: white;
+  color: black; /* text color */
+}
+
+/* Change header text to imported font */
+h2 {
+  font-family: 'Libre Baskerville', serif;
+}
+
+g-gtitle {
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* Make text visible on inputs */
+.shiny-input-container {
+  color: #474747;
+}
