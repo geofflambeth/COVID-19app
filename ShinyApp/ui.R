@@ -1,21 +1,12 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(plotly)
 
-# Define UI for application that draws a histogram
 shinyUI(fluidPage(
+    includeCSS("www/custom.css"),
 
     # Application title
     titlePanel("COVID-19 Data Dashboard by Geoff Lambeth - Data Courtesy of Johns Hopkins University", windowTitle = "COVID-19"),
-    
+
 
     # Show a plot of the generated distribution
     fluidRow(
@@ -40,7 +31,7 @@ shinyUI(fluidPage(
             6,
             plotlyOutput("ProvinceStateTrend")
         ),
-    
+
     ),
     fluidRow(
         column(
@@ -69,4 +60,3 @@ shinyUI(fluidPage(
  #       plotlyOutput("CasesUS_NM")
  #   )
 ))
-
