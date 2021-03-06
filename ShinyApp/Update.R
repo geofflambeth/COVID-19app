@@ -1,7 +1,10 @@
 ##This script needs to be run after pulling down updates from JohnsHopkins origin or upstream...
 ##Changes need to be committed to master after running
 
-setwd("~/OneDrive/GitHub/COVID-19app/csse_covid_19_data/csse_covid_19_daily_reports/")
+# install.packages("dplyr")
+# install.packages("lubridate")
+
+setwd("../csse_covid_19_data/csse_covid_19_daily_reports/")
 
 library("dplyr")
 library("lubridate")
